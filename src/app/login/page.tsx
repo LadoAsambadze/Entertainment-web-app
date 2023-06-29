@@ -34,6 +34,9 @@ const Main = styled(Box)`
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
+  @media (min-width: 768px) {
+    padding: 88px 184px 420px 184px;
+  }
 `;
 
 const LogIn = styled(Box)`
@@ -44,6 +47,10 @@ const LogIn = styled(Box)`
   padding: 24px 24px 32px 24px;
   display: flex;
   flex-direction: column;
+  @media (min-width: 768px) {
+    margin-top: 72px;
+    padding: 32px;
+  }
 `;
 
 const Header = styled(Typography)`
