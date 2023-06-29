@@ -29,6 +29,9 @@ const Main = styled(Box)`
   @media (min-width: 768px) {
     padding: 22px;
   }
+  @media (min-width: 1440px) {
+    display: none;
+  }
 `;
 
 const Logo = styled.img`
