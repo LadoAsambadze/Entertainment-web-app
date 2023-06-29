@@ -62,6 +62,3 @@ const SearchType = styled(Input)`
   }
 `;
 
-const TrandDiv = styled(Box)`
-  width: 100%;
-`;
