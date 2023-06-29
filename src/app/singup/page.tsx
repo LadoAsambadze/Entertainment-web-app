@@ -38,6 +38,9 @@ const Main = styled(Box)`
   @media (min-width: 768px) {
     padding: 88px 184px 420px 184px;
   }
+  @media (min-width: 1440px) {
+    padding: 80px 520px 205px 520px;
+  }
 `;
 
 const LogIn = styled(Box)`
@@ -51,6 +54,9 @@ const LogIn = styled(Box)`
   @media (min-width: 768px) {
     margin-top: 72px;
     padding: 32px;
+  }
+  @media (min-width: 1440x) {
+    margin-top: 83px;
   }
 `;
 
