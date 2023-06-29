@@ -6,20 +6,21 @@ import { Typography } from "@mui/material";
 import { Input } from "@mui/material";
 import { Button } from "@mui/material";
 
-export default function Login() {
+export default function Singup() {
   return (
     <>
       <Main>
         <img src="logo.svg" />
         <LogIn>
-          <Header>Login</Header>
+          <Header>Sing Up</Header>
           <Form>
             <InputField placeholder="Email address" type="email" />
             <InputField placeholder="Password" type="text" />
-            <LogDone>Login to your account</LogDone>
+            <InputField placeholder="Repeat Password" type="text" />
+            <LogDone>Create an account</LogDone>
             <SingDiv>
-              <Question>Don’t have an account?</Question>
-              <SignUp>Sing Up</SignUp>
+              <Question>Alread have an account?</Question>
+              <SignUp>Login</SignUp>
             </SingDiv>
           </Form>
         </LogIn>
@@ -33,7 +34,7 @@ const Main = styled(Box)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 100vh;
+  overflow-y: none;
 `;
 
 const LogIn = styled(Box)`
