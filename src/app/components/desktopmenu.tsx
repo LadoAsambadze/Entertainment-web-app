@@ -23,7 +23,7 @@ export default function Desktopmenu() {
 const Main = styled(Box)`
   display: none;
   @media (min-width: 1440px) {
- 
+    position: absolute;
     width: 100px;
     height: 960px;
     border-radius: 20px;

@@ -4,6 +4,7 @@ import styled from "@emotion/styled";
 import Desktopmenu from "./components/desktopmenu";
 import Menu from "./components/menu";
 import { Box } from "@mui/material";
+import Searchbar from "./components/searchbar";
 
 export default function Home() {
   return (
@@ -11,6 +12,7 @@ export default function Home() {
       <Main>
         <Menu />
         <Desktopmenu />
+        <Searchbar />
       </Main>
     </>
   );
