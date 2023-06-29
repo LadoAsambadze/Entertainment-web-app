@@ -1,9 +1,11 @@
 "use client";
 
+import Menu from "./components/menu";
+
 export default function Home() {
   return (
     <>
-      <h1>qqegqg</h1>
+      <Menu />
     </>
   );
 }
