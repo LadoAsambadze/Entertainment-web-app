@@ -26,8 +26,10 @@ const Main = styled(Box)`
   display: flex;
   flex-direction: row;
   background: var(--semi-dark-blue, #161d2f);
+  position: fixed;
   @media (min-width: 768px) {
     padding: 22px;
+    width: 95%;
   }
   @media (min-width: 1440px) {
     display: none;
