@@ -5,8 +5,18 @@ import Desktopmenu from "./components/desktopmenu";
 import Menu from "./components/menu";
 import { Box, Typography } from "@mui/material";
 import Searchbar from "./components/searchbar";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [images, setImages] = useState([]);
+
+  const test = async () => {
+    const response = await axios.get("http://localhost:3001/home");
+    const answer = response.data.getItems;
+    setImages(answer);
+  };
+
   return (
     <>
       <Main>
@@ -17,10 +27,8 @@ export default function Home() {
         <TrandDiv>image</TrandDiv>
         <Recomended>Recommended for you</Recomended>
         <RecomDiv>
-          <div>qegqgq</div>
-          <div>qegqegqe</div>
-          <div>qegqgq</div>
-          <div>qegqegqe</div>
+          <ImageDiv></ImageDiv>
+          <img src="http://localhost:3001/images/the-great-lands/regular/small.jpg" />
         </RecomDiv>
       </Main>
     </>
@@ -78,4 +86,10 @@ const RecomDiv = styled(Box)`
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(1, 1fr);
   grid-gap: 15px;
+`;
+
+const ImageDiv = styled(Box)`
+  width: 100%;
+  height: 100px;
+  background: url("./assets/thumbnails/the-great-lands/regular/small.jpg");
 `;
