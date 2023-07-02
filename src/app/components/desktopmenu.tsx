@@ -53,6 +53,10 @@ const Image = styled.img`
   height: 20px;
   width: 20px;
   cursor: pointer;
+  filter: brightness(50%);
+  &:hover {
+    filter: brightness(100%);
+  }
 `;
 
 const Avatar = styled.img`

@@ -44,6 +44,10 @@ const Logo = styled.img`
 const Image = styled.img`
   height: 16px;
   cursor: pointer;
+  filter: brightness(50%);
+  &:hover {
+    filter: brightness(100%);
+  }
 `;
 
 const IconBox = styled(Box)`
