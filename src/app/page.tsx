@@ -83,12 +83,42 @@ export default function Home() {
           <InnerDiv drag="x" dragConstraints={{ right: 0, left: -width }}>
             {updateTrending.map((image, index) => {
               return (
-                <ImageBox as={motion.div} key={index}>
-                  <FinalImage
-                    src={`http://localhost:3001/images${image.thumbnail.regular.large}`}
-                    alt="Image"
-                  />
-                </ImageBox>
+                <div key={index} style={{ position: "relative" }}>
+                  <ImageBox as={motion.div}>
+                    <picture>
+                      <source
+                        media="(min-width: 1440px)"
+                        srcSet={`http://localhost:3001/images${image.thumbnail.regular.large}`}
+                      />
+                      <source
+                        media="(min-width: 768px)"
+                        srcSet={`http://localhost:3001/images${image.thumbnail.regular.medium}`}
+                      />
+                      <FinalImage
+                        src={`http://localhost:3001/images${image.thumbnail.regular.small}`}
+                        alt="Image"
+                      />
+                    </picture>
+                    <div
+                      style={{
+                        top: "95px",
+                        left: "16px",
+                        position: "absolute",
+                      }}
+                    >
+                      <Description>
+                        <Year>{image.year}</Year>
+                        <Dot></Dot>
+                        <Icon src="icon-nav-movies.svg" />
+                        <Kind>{image.category}</Kind>
+                        <Dot></Dot>
+                        <Age>{image.rating}</Age>
+                      </Description>
+
+                      <Head>{image?.title}</Head>
+                    </div>
+                  </ImageBox>
+                </div>
               );
             })}
           </InnerDiv>
@@ -120,7 +150,6 @@ export default function Home() {
                 <Dot></Dot>
                 <Age>{image.rating}</Age>
               </Description>
-              <Head>{image?.title}</Head>
             </ImageDiv>
           ))}
         </RecomDiv>
@@ -177,9 +206,9 @@ const ImageBox = styled.div`
 `;
 
 const FinalImage = styled.img`
+  border-radius: 8px;
   width: 100%;
   height: 100%;
-  border-radius: 8px;
 `;
 
 const Recomended = styled(Typography)`
