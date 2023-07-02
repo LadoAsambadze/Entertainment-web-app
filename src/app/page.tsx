@@ -6,7 +6,7 @@ import Menu from "./components/menu";
 import { Box, Typography } from "@mui/material";
 import Searchbar from "./components/searchbar";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 interface Image {
   thumbnail: {
     regular: {
@@ -21,25 +21,37 @@ interface Image {
 
 export default function Home() {
   const [images, setImages] = useState<Image[]>([]);
+  const [search, setSearch] = useState("");
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+  };
+
+  const updateImages = images.filter((image) =>
+    image.title.toLowerCase().includes(search.toLowerCase())
+  );
 
   const test = async () => {
     const response = await axios.get("http://localhost:3001/home");
     const answer = response.data.getItems;
     setImages(answer);
   };
-  test();
+
+  useEffect(() => {
+    test();
+  }, []);
 
   return (
     <>
       <Main>
         <Menu />
         <Desktopmenu />
-        <Searchbar />
+        <Searchbar onChange={handleSearch} />
         <Header>Tranding</Header>
         <TrandDiv>image</TrandDiv>
         <Recomended>Recommended for you</Recomended>
         <RecomDiv>
-          {images.map((image, index) => (
+          {updateImages.map((image, index) => (
             <ImageDiv key={index}>
               <GetImage
                 src={`http://localhost:3001/images${image.thumbnail.regular.small}`}

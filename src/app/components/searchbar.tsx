@@ -4,16 +4,18 @@ import styled from "@emotion/styled";
 import { Box } from "@mui/material";
 import { Input } from "@mui/material";
 
-export default function Searchbar() {
+
+export default function Searchbar({ onChange }: { onChange: (event: React.ChangeEvent<HTMLInputElement>) => void }) {
   return (
     <>
       <Main>
         <Search src="icon-search.svg" alt="search logo" />
-        <SearchType placeholder="Search for movies or TV series" />
+        <SearchType placeholder="Search for movies or TV series" onChange={onChange} />
       </Main>
     </>
   );
 }
+
 
 const Main = styled(Box)`
   width: 100%;
