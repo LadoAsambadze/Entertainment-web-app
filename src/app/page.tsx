@@ -8,7 +8,7 @@ import Searchbar from "./components/searchbar";
 import axios from "axios";
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-
+import { keyframes } from "@emotion/react";
 interface Image {
   thumbnail: {
     regular: {
@@ -35,19 +35,30 @@ type InnerDivProps = {
   };
 };
 
+interface FinalImageProps {
+  imageSrc: string;
+  imageSrcMedium: string;
+  imageSrcLarge: string;
+}
+
 export default function Home() {
   const [images, setImages] = useState<Image[]>([]);
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("");
   const [width, setWidth] = useState(1000);
+  const [theme, setTheme] = useState("");
+  const [book, setBook] = useState(false);
+  const [animate, setAnimate] = useState(true);
   const carousel = useRef<HTMLDivElement | null>(null);
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
   };
-  const updateImages = images.filter(
-    (image) =>
-      image.title.toLowerCase().includes(search.toLowerCase()) &&
-      image.category.toLowerCase().includes(category.toLowerCase())
+
+  const updateImages = images.filter((image) =>
+    book
+      ? image.isBookmarked === book &&
+        image.title.toLowerCase().includes(search.toLowerCase())
+      : image.title.toLowerCase().includes(search.toLowerCase()) &&
+        image.category.toLowerCase().includes(theme.toLowerCase())
   );
   const updateTrending = images.filter((image) => image.isTrending === true);
 
@@ -58,6 +69,8 @@ export default function Home() {
   };
   useEffect(() => {
     test();
+    const timeout = setTimeout(() => setAnimate(false), 2000);
+    return () => clearTimeout(timeout);
   }, []);
 
   useEffect(() => {
@@ -65,20 +78,19 @@ export default function Home() {
       setWidth(carousel.current.scrollWidth - carousel.current.offsetWidth);
     }
   }, [images]);
-
+  console.log(book);
   return (
     <>
       <Main>
-        <Menu />
-        <Desktopmenu />
+        <Menu theme={theme} setTheme={setTheme} setBook={setBook} />
+        <Desktopmenu
+          theme={theme}
+          setTheme={setTheme}
+          book={book}
+          setBook={setBook}
+        />
         <Searchbar onChange={handleSearch} />
-        <Header
-          onClick={() => {
-            setCategory("Movie");
-          }}
-        >
-          Tranding
-        </Header>
+        <Header>Tranding</Header>
         <TrandDiv ref={carousel} as={motion.div}>
           <InnerDiv drag="x" dragConstraints={{ right: 0, left: -width }}>
             {updateTrending.map((image, index) => {
@@ -91,7 +103,13 @@ export default function Home() {
                   >
                     <BookmarkDiv>
                       <Circle>
-                        <BookImg src="icon-bookmark-empty.svg" />
+                        <BookImg
+                          src={
+                            image.isBookmarked
+                              ? "icon-bookmark-full.svg"
+                              : "icon-bookmark-empty.svg"
+                          }
+                        />
                       </Circle>
                     </BookmarkDiv>
                     <Description>
@@ -127,7 +145,6 @@ export default function Home() {
                   alt="Image"
                 />
               </picture>
-
               <Description>
                 <Year>{image.year}</Year>
                 <Dot></Dot>
@@ -139,7 +156,13 @@ export default function Home() {
               <Head>{image.title}</Head>
               <BookmarkDivTwo>
                 <Circle>
-                  <BookImg src="icon-bookmark-empty.svg" />
+                  <BookImg 
+                    src={
+                      image.isBookmarked
+                        ? "icon-bookmark-full.svg"
+                        : "icon-bookmark-empty.svg"
+                    }
+                  />
                 </Circle>
               </BookmarkDivTwo>
             </ImageDiv>
@@ -149,6 +172,29 @@ export default function Home() {
     </>
   );
 }
+
+const common = keyframes`
+  from {
+    scale: 0.8;
+  
+  }
+  to {
+    scale: 1;
+ 
+ 
+  }
+`;
+
+const trend = keyframes`
+  from {
+   
+    transform: translateX(100%)
+  }
+  to {
+    
+    transform: translateX(0%);
+  }
+`;
 
 const Main = styled(Box)`
   display: flex;
@@ -182,6 +228,7 @@ const TrandDiv = styled.div`
   padding-left: 16px;
   margin-top: 16px;
   cursor: grab;
+
   overflow: hidden;
   @media (min-width: 1440px) {
     margin-left: 110px;
@@ -189,12 +236,14 @@ const TrandDiv = styled.div`
 `;
 const InnerDiv = styled(motion.div)<InnerDivProps>`
   display: flex;
+  
 `;
 
 const ImageBox = styled.div`
   min-height: 140px;
   min-width: 240px;
   padding: 8px;
+  
   @media (min-width: 768px) {
     min-width: 470px;
     min-height: 230px;
@@ -202,7 +251,7 @@ const ImageBox = styled.div`
   }
 `;
 
-const FinalImage = styled.div`
+const FinalImage = styled.div<FinalImageProps>`
   border-radius: 8px;
   width: 100%;
   height: 100%;
@@ -210,6 +259,7 @@ const FinalImage = styled.div`
   background-size: cover;
   background-position: center;
   padding: 8px 8px 16px 16px;
+  animation: ${trend} 1.8s ease-out;
   @media (min-width: 768px) {
     background-image: url(${(props) => props.imageSrcMedium});
     padding: 16px 24px 24px 24px;
@@ -305,6 +355,7 @@ const ImageDiv = styled(Box)`
 const GetImage = styled.img`
   max-width: 100%;
   border-radius: 8px;
+  animation: ${common} 1s ease-out;
 `;
 
 const Description = styled(Box)`

@@ -2,17 +2,74 @@
 
 import styled from "@emotion/styled";
 import { Box } from "@mui/material";
+import { useState } from "react";
 
-export default function Desktopmenu() {
+export default function Desktopmenu({ theme, setTheme, book, setBook }: any) {
+  const [clicked, setClicked] = useState(false);
   return (
     <>
       <Main>
-        <Logo src="logo.svg" alt="logo" />
+        <Logo
+          onClick={() => {
+            setTheme("");
+            setBook(false);
+            setClicked(false);
+          }}
+          src="logo.svg"
+          alt="logo"
+        />
         <IconBox>
-          <Image src="icon-nav-home.svg" />
-          <Image src="icon-category-movie.svg" />
-          <Image src="icon-category-tv.svg" />
-          <Image src="icon-bookmark-full.svg" />
+          <Image
+            src="icon-nav-home.svg"
+            onClick={() => {
+              setTheme("");
+              setBook(false);
+              setClicked(false);
+            }}
+            style={{
+              filter:
+                theme === "" && !clicked
+                  ? " brightness(100%)"
+                  : " brightness(50%)",
+            }}
+          />
+          <Image
+            src="icon-category-movie.svg"
+            onClick={() => {
+              setTheme("Movie");
+              setBook(false);
+              setClicked(false);
+            }}
+            style={{
+              filter:
+                theme === "Movie" && !clicked
+                  ? " brightness(100%)"
+                  : " brightness(50%)",
+            }}
+          />
+          <Image
+            src="icon-category-tv.svg"
+            onClick={() => {
+              setTheme("TV Series");
+              setBook(false);
+              setClicked(false);
+            }}
+            style={{
+              filter:
+                theme === "TV Series" && !clicked
+                  ? " brightness(100%)"
+                  : " brightness(50%)",
+            }}
+          />
+
+          <Image
+            src="icon-bookmark-full.svg"
+            onClick={() => {
+              setBook(true);
+              setClicked(true);
+            }}
+            style={{ filter: clicked ? "brightness(100%)" : "brightness(50%)" }}
+          />
         </IconBox>
         <Avatar src="image-avatar.png" />
       </Main>
@@ -39,6 +96,7 @@ const Main = styled(Box)`
 const Logo = styled.img`
   width: 32px;
   height: 25px;
+  cursor: pointer;
 `;
 
 const IconBox = styled(Box)`
