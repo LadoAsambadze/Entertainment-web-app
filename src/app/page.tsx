@@ -83,42 +83,28 @@ export default function Home() {
           <InnerDiv drag="x" dragConstraints={{ right: 0, left: -width }}>
             {updateTrending.map((image, index) => {
               return (
-                <div key={index} style={{ position: "relative" }}>
-                  <ImageBox as={motion.div}>
-                    <picture>
-                      <source
-                        media="(min-width: 1440px)"
-                        srcSet={`http://localhost:3001/images${image.thumbnail.regular.large}`}
-                      />
-                      <source
-                        media="(min-width: 768px)"
-                        srcSet={`http://localhost:3001/images${image.thumbnail.regular.medium}`}
-                      />
-                      <FinalImage
-                        src={`http://localhost:3001/images${image.thumbnail.regular.small}`}
-                        alt="Image"
-                      />
-                    </picture>
-                    <div
-                      style={{
-                        top: "95px",
-                        left: "16px",
-                        position: "absolute",
-                      }}
-                    >
-                      <Description>
-                        <Year>{image.year}</Year>
-                        <Dot></Dot>
-                        <Icon src="icon-nav-movies.svg" />
-                        <Kind>{image.category}</Kind>
-                        <Dot></Dot>
-                        <Age>{image.rating}</Age>
-                      </Description>
-
-                      <Head>{image?.title}</Head>
-                    </div>
-                  </ImageBox>
-                </div>
+                <ImageBox as={motion.div} key={index}>
+                  <FinalImage
+                    imageSrc={`http://localhost:3001/images${image.thumbnail.regular.small}`}
+                    imageSrcMedium={`http://localhost:3001/images${image.thumbnail.regular.medium}`}
+                    imageSrcLarge={`http://localhost:3001/images${image.thumbnail.regular.large}`}
+                  >
+                    <BookmarkDiv>
+                      <Circle>
+                        <BookImg src="icon-bookmark-empty.svg" />
+                      </Circle>
+                    </BookmarkDiv>
+                    <Description>
+                      <Year>{image.year}</Year>
+                      <Dot></Dot>
+                      <Icon src="icon-nav-movies.svg" />
+                      <Kind>{image.category}</Kind>
+                      <Dot></Dot>
+                      <Age>{image.rating}</Age>
+                    </Description>
+                    <Head>{image.title}</Head>
+                  </FinalImage>
+                </ImageBox>
               );
             })}
           </InnerDiv>
@@ -150,6 +136,12 @@ export default function Home() {
                 <Dot></Dot>
                 <Age>{image.rating}</Age>
               </Description>
+              <Head>{image.title}</Head>
+              <BookmarkDivTwo>
+                <Circle>
+                  <BookImg src="icon-bookmark-empty.svg" />
+                </Circle>
+              </BookmarkDivTwo>
             </ImageDiv>
           ))}
         </RecomDiv>
@@ -192,7 +184,7 @@ const TrandDiv = styled.div`
   cursor: grab;
   overflow: hidden;
   @media (min-width: 1440px) {
-    padding-left: 130px;
+    margin-left: 110px;
   }
 `;
 const InnerDiv = styled(motion.div)<InnerDivProps>`
@@ -203,12 +195,68 @@ const ImageBox = styled.div`
   min-height: 140px;
   min-width: 240px;
   padding: 8px;
+  @media (min-width: 768px) {
+    min-width: 470px;
+    min-height: 230px;
+    flex-shrink: 0;
+  }
 `;
 
-const FinalImage = styled.img`
+const FinalImage = styled.div`
   border-radius: 8px;
   width: 100%;
   height: 100%;
+  background-image: url(${(props) => props.imageSrc});
+  background-size: cover;
+  background-position: center;
+  padding: 8px 8px 16px 16px;
+  @media (min-width: 768px) {
+    background-image: url(${(props) => props.imageSrcMedium});
+    padding: 16px 24px 24px 24px;
+  }
+  @media (min-width: 1440px) {
+    background-image: url(${(props) => props.imageSrcLarge});
+  }
+`;
+
+const BookmarkDiv = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 46px;
+  @media (min-width: 768px) {
+    margin-bottom: 106px;
+  }
+`;
+const BookmarkDivTwo = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  align-items: center;
+  right: 8px;
+  top: 8px;
+  position: absolute;
+  @media (min-width: 768px) {
+    right: 16px;
+    top: 16px;
+  }
+`;
+
+const Circle = styled.div`
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  background: #10141e;
+  border-radius: 100%;
+  opacity: 0.7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+`;
+const BookImg = styled.img`
+  cursor: pointer;
 `;
 
 const Recomended = styled(Typography)`
@@ -251,6 +299,7 @@ const ImageDiv = styled(Box)`
   border-radius: 8px;
   display: flex;
   flex-direction: column;
+  position: relative;
 `;
 
 const GetImage = styled.img`
@@ -274,6 +323,7 @@ const Year = styled(Typography)`
   font-style: normal;
   font-weight: 300;
   line-height: normal;
+  opacity: 0.75;
   @media (min-width: 768px) {
     font-size: 18px;
   }
@@ -286,6 +336,7 @@ const Dot = styled(Box)`
   opacity: 0.5;
   background: var(--pure-white, #fff);
   margin-left: 6px;
+  opacity: 0.75;
   @media (min-width: 768px) {
     width: 3px;
     height: 3px;
@@ -295,6 +346,7 @@ const Icon = styled.img`
   width: 10px;
   height: 10px;
   margin-left: 5px;
+  opacity: 0.75;
 
   @media (min-width: 768px) {
     width: 12px;
@@ -325,6 +377,7 @@ const Age = styled(Typography)`
   font-weight: 300;
   line-height: normal;
   margin-left: 6px;
+  opacity: 0.75;
   @media (min-width: 768px) {
     font-size: 18px;
   }
