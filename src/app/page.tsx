@@ -111,12 +111,13 @@ export default function Home() {
                     imageSrcLarge={`http://localhost:3001/images${image.thumbnail.regular.large}`}
                   >
                     <BookmarkDiv>
-                      <Circle>
+                      <Circle
+                        onClick={() => {
+                          toggleBook(image.title);
+                          console.log(image.title);
+                        }}
+                      >
                         <BookImg
-                          onClick={() => {
-                            toggleBook(image.title);
-                            console.log(image.title);
-                          }}
                           src={
                             image.isBookmarked
                               ? "icon-bookmark-full.svg"
@@ -168,12 +169,13 @@ export default function Home() {
               </Description>
               <Head>{image.title}</Head>
               <BookmarkDivTwo>
-                <Circle>
+                <Circle
+                  onClick={() => {
+                    toggleBook(image.title);
+                    console.log(image.title);
+                  }}
+                >
                   <BookImg
-                    onClick={() => {
-                      toggleBook(image.title);
-                      console.log(image.title);
-                    }}
                     src={
                       image.isBookmarked
                         ? "icon-bookmark-full.svg"
