@@ -23,6 +23,7 @@ interface Image {
   title: string;
   isBookmarked: boolean;
   isTrending: boolean;
+  id: string;
 }
 
 type InnerDivProps = {
@@ -48,6 +49,7 @@ export default function Home() {
   const [theme, setTheme] = useState("");
   const [book, setBook] = useState(false);
   const [animate, setAnimate] = useState(true);
+  const [extra, setExtra] = useState(false);
   const carousel = useRef<HTMLDivElement | null>(null);
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
@@ -67,18 +69,25 @@ export default function Home() {
     const res = response.data.getItems;
     setImages(res);
   };
+
   useEffect(() => {
     test();
     const timeout = setTimeout(() => setAnimate(false), 2000);
     return () => clearTimeout(timeout);
-  }, []);
+  }, [extra]);
 
   useEffect(() => {
     if (carousel.current) {
       setWidth(carousel.current.scrollWidth - carousel.current.offsetWidth);
     }
   }, [images]);
-  console.log(book);
+
+  const toggleBook = async (title: string) => {
+    const response = await axios.put(`http://localhost:3001/bookmark/${title}`);
+    setExtra(!extra);
+  };
+  console.log(images);
+
   return (
     <>
       <Main>
@@ -104,6 +113,10 @@ export default function Home() {
                     <BookmarkDiv>
                       <Circle>
                         <BookImg
+                          onClick={() => {
+                            toggleBook(image.title);
+                            console.log(image.title);
+                          }}
                           src={
                             image.isBookmarked
                               ? "icon-bookmark-full.svg"
@@ -156,7 +169,11 @@ export default function Home() {
               <Head>{image.title}</Head>
               <BookmarkDivTwo>
                 <Circle>
-                  <BookImg 
+                  <BookImg
+                    onClick={() => {
+                      toggleBook(image.title);
+                      console.log(image.title);
+                    }}
                     src={
                       image.isBookmarked
                         ? "icon-bookmark-full.svg"
@@ -236,14 +253,13 @@ const TrandDiv = styled.div`
 `;
 const InnerDiv = styled(motion.div)<InnerDivProps>`
   display: flex;
-  
 `;
 
 const ImageBox = styled.div`
   min-height: 140px;
   min-width: 240px;
   padding: 8px;
-  
+
   @media (min-width: 768px) {
     min-width: 470px;
     min-height: 230px;

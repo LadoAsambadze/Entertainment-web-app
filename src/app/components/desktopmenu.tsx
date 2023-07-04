@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 import { Box } from "@mui/material";
 import { useState } from "react";
 
-export default function Desktopmenu({ theme, setTheme, book, setBook }: any) {
+export default function Desktopmenu({ theme, setTheme, setBook }: any) {
   const [clicked, setClicked] = useState(false);
   return (
     <>
