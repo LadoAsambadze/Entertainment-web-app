@@ -21,7 +21,6 @@ export default function Singup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeat, setRepeat] = useState("");
-  const [info, setInfo] = useState("");
   const [warning, setWarning] = useState("");
   const [submitClicked, setSubmitClicked] = useState(false);
   const emailRegex =
@@ -51,8 +50,6 @@ export default function Singup() {
     }
   };
   const router = useRouter();
-
-  console.log(info);
 
   return (
     <>
@@ -143,7 +140,13 @@ export default function Singup() {
             </LogDone>
             <SingDiv>
               <Question>Alread have an account?</Question>
-              <SignUp>Login</SignUp>
+              <SignUp
+                onClick={() => {
+                  router.push("/login");
+                }}
+              >
+                Login
+              </SignUp>
             </SingDiv>
           </Form>
         </LogIn>
