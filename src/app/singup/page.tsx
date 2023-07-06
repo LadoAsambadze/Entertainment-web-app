@@ -5,8 +5,55 @@ import { styled } from "@mui/material/styles";
 import { Typography } from "@mui/material";
 import { Input } from "@mui/material";
 import { Button } from "@mui/material";
+import axios from "axios";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+
+interface AxiosError extends Error {
+  response: {
+    data: {
+      message: string;
+    };
+  };
+}
 
 export default function Singup() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [repeat, setRepeat] = useState("");
+  const [info, setInfo] = useState("");
+  const [warning, setWarning] = useState("");
+  const [submitClicked, setSubmitClicked] = useState(false);
+  const emailRegex =
+    /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z]{2,})$/;
+  const register = async (email: any, password: any) => {
+    setSubmitClicked(true);
+    if (
+      email !== "" &&
+      password !== "" &&
+      repeat !== "" &&
+      emailRegex.test(email)
+    ) {
+      if (repeat === password) {
+        try {
+          const response = await axios.post("http://localhost:3001/singup", {
+            email: email,
+            password: password,
+          });
+
+          router.push("/login");
+        } catch (error) {
+          setWarning((error as AxiosError).response.data.message);
+        }
+      } else {
+        setWarning("Passwords dont matches");
+      }
+    }
+  };
+  const router = useRouter();
+
+  console.log(info);
+
   return (
     <>
       <Main>
@@ -14,10 +61,86 @@ export default function Singup() {
         <LogIn>
           <Header>Sing Up</Header>
           <Form>
-            <InputField placeholder="Email address" type="email" />
-            <InputField placeholder="Password" type="text" />
-            <InputField placeholder="Repeat Password" type="text" />
-            <LogDone>Create an account</LogDone>
+            <InputField
+              placeholder="Email address"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <Warn
+              style={{
+                display: email === "" && submitClicked ? "block" : "none",
+                color: "red",
+              }}
+            >
+              Email field must be filled
+            </Warn>
+            <Warn
+              style={{
+                display:
+                  !emailRegex.test(email) && submitClicked && email !== ""
+                    ? "block"
+                    : "none",
+                color: "red",
+              }}
+            >
+              Incorrect email
+            </Warn>
+
+            <Warn
+              style={{
+                display: warning === "Email already exists" ? "block" : "none",
+                color: "red",
+              }}
+            >
+              Email already exists
+            </Warn>
+
+            <InputField
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Warn
+              style={{
+                display: password === "" && submitClicked ? "block" : "none",
+                color: "red",
+              }}
+            >
+              This field must be filled
+            </Warn>
+            <InputField
+              placeholder="Repeat Password"
+              onChange={(e) => setRepeat(e.target.value)}
+            />
+            <Warn
+              style={{
+                display: repeat === "" && submitClicked ? "block" : "none",
+                color: "red",
+              }}
+            >
+              This field must be filled
+            </Warn>
+            <Warn
+              style={{
+                display:
+                  warning === "Passwords dont matches" && password !== repeat
+                    ? "block"
+                    : "none",
+                color: "red",
+              }}
+            >
+              Passwords dont matches
+            </Warn>
+
+            <LogDone
+              type="submit"
+              onClick={() => {
+                register(email, password);
+              }}
+            >
+              Create an account
+            </LogDone>
             <SingDiv>
               <Question>Alread have an account?</Question>
               <SignUp>Login</SignUp>
@@ -129,4 +252,15 @@ const SignUp = styled(Button)`
   font-style: normal;
   font-weight: 300;
   line-height: normal;
+`;
+
+const Warn = styled(Typography)`
+  font-size: 12px;
+  font-family: Outfit;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+  color: red;
+  margin-top: 5px;
+  margin-left: 3px;
 `;

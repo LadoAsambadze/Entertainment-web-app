@@ -67,6 +67,7 @@ export default function Home() {
   const test = async () => {
     const response = await axios.get("http://localhost:3001/home");
     const res = response.data.getItems;
+
     setImages(res);
   };
 
@@ -83,7 +84,7 @@ export default function Home() {
   }, [images]);
 
   const toggleBook = async (title: string) => {
-    const response = await axios.put(`http://localhost:3001/bookmark/${title}`);
+    await axios.put(`http://localhost:3001/bookmark/${title}`);
     setExtra(!extra);
   };
   console.log(images);
