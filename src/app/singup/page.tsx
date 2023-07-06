@@ -70,7 +70,7 @@ export default function Singup() {
                 color: "red",
               }}
             >
-              Email field must be filled
+              Please enter your email address.
             </Warn>
             <Warn
               style={{
@@ -90,7 +90,7 @@ export default function Singup() {
                 color: "red",
               }}
             >
-              Email already exists
+              Email adress already exist
             </Warn>
 
             <InputField
@@ -104,7 +104,7 @@ export default function Singup() {
                 color: "red",
               }}
             >
-              This field must be filled
+              Please enter your password.
             </Warn>
             <InputField
               placeholder="Repeat Password"
@@ -116,7 +116,7 @@ export default function Singup() {
                 color: "red",
               }}
             >
-              This field must be filled
+              Please confirm your password.
             </Warn>
             <Warn
               style={{
@@ -127,7 +127,7 @@ export default function Singup() {
                 color: "red",
               }}
             >
-              Passwords dont matches
+              Passwords don't match
             </Warn>
 
             <LogDone

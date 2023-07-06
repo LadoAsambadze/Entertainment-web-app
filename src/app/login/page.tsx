@@ -62,7 +62,7 @@ export default function Login() {
                     : "none",
               }}
             >
-              Email required
+              "Please enter email address
             </Warn>
             <Warn
               style={{
@@ -90,7 +90,7 @@ export default function Login() {
                     : "none",
               }}
             >
-              Password required
+              "Please enter password"
             </Warn>
             <Warn
               style={{
@@ -100,7 +100,7 @@ export default function Login() {
                     : "none",
               }}
             >
-              Incorrect password
+              Wrong password
             </Warn>
             <LogDone
               onClick={() => {
