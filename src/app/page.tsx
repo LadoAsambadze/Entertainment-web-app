@@ -1,468 +1,240 @@
 "use client";
 
-import styled from "@emotion/styled";
-import Desktopmenu from "./components/desktopmenu";
-import Menu from "./components/menu";
-import { Box, Typography } from "@mui/material";
-import Searchbar from "./components/searchbar";
+import { Box } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { Typography } from "@mui/material";
+import { Input } from "@mui/material";
+import { Button } from "@mui/material";
 import axios from "axios";
-import { useState, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
-import { keyframes } from "@emotion/react";
-interface Image {
-  thumbnail: {
-    regular: {
-      small: string;
-      medium: string;
-      large: string;
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+interface TypeErrors {
+  response: {
+    data: {
+      message: string;
     };
   };
-  year: number;
-  category: string;
-  rating: string;
-  title: string;
-  isBookmarked: boolean;
-  isTrending: boolean;
-  id: string;
 }
 
-type InnerDivProps = {
-  drag?: boolean | "x" | "y";
-  dragConstraints?: {
-    top?: number;
-    right?: number;
-    bottom?: number;
-    left?: number;
-  };
-};
+export default function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [warning, setWarning] = useState("");
+  const [submitClicked, setSubmitClicked] = useState(false);
+  const emailRegex =
+    /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z]{2,})$/;
 
-interface FinalImageProps {
-  imageSrc: string;
-  imageSrcMedium: string;
-  imageSrcLarge: string;
-}
-
-export default function Home() {
-  const [images, setImages] = useState<Image[]>([]);
-  const [search, setSearch] = useState("");
-  const [width, setWidth] = useState(1000);
-  const [theme, setTheme] = useState("");
-  const [book, setBook] = useState(false);
-  const [animate, setAnimate] = useState(true);
-  const [extra, setExtra] = useState(false);
-  const carousel = useRef<HTMLDivElement | null>(null);
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(event.target.value);
-  };
-
-  const updateImages = images.filter((image) =>
-    book
-      ? image.isBookmarked === book &&
-        image.title.toLowerCase().includes(search.toLowerCase())
-      : image.title.toLowerCase().includes(search.toLowerCase()) &&
-        image.category.toLowerCase().includes(theme.toLowerCase())
-  );
-  const updateTrending = images.filter((image) => image.isTrending === true);
-
-  const test = async () => {
-    const response = await axios.get("http://localhost:3001/home");
-    const res = response.data.getItems;
-
-    setImages(res);
-  };
-
-  useEffect(() => {
-    test();
-    const timeout = setTimeout(() => setAnimate(false), 2000);
-    return () => clearTimeout(timeout);
-  }, [extra]);
-
-  useEffect(() => {
-    if (carousel.current) {
-      setWidth(carousel.current.scrollWidth - carousel.current.offsetWidth);
+  const router = useRouter();
+  const logg = async (email: any, password: any) => {
+    setSubmitClicked(true);
+    try {
+      const response = await axios.post("http://localhost:3001/login", {
+        email: email,
+        password: password,
+      });
+      setWarning(response.data.message);
+      router.push("/home");
+    } catch (error) {
+      setWarning((error as TypeErrors).response.data.message);
     }
-  }, [images]);
-
-  const toggleBook = async (title: string) => {
-    await axios.put(`http://localhost:3001/bookmark/${title}`);
-    setExtra(!extra);
   };
-  console.log(images);
-
+  console.log(warning);
   return (
     <>
       <Main>
-        <Menu theme={theme} setTheme={setTheme} setBook={setBook} />
-        <Desktopmenu
-          theme={theme}
-          setTheme={setTheme}
-          book={book}
-          setBook={setBook}
-        />
-        <Searchbar onChange={handleSearch} />
-        <Header>Tranding</Header>
-        <TrandDiv ref={carousel} as={motion.div}>
-          <InnerDiv drag="x" dragConstraints={{ right: 0, left: -width }}>
-            {updateTrending.map((image, index) => {
-              return (
-                <ImageBox as={motion.div} key={index}>
-                  <FinalImage
-                    imageSrc={`http://localhost:3001/images${image.thumbnail.regular.small}`}
-                    imageSrcMedium={`http://localhost:3001/images${image.thumbnail.regular.medium}`}
-                    imageSrcLarge={`http://localhost:3001/images${image.thumbnail.regular.large}`}
-                  >
-                    <BookmarkDiv>
-                      <Circle
-                        onClick={() => {
-                          toggleBook(image.title);
-                          console.log(image.title);
-                        }}
-                      >
-                        <BookImg
-                          src={
-                            image.isBookmarked
-                              ? "icon-bookmark-full.svg"
-                              : "icon-bookmark-empty.svg"
-                          }
-                        />
-                      </Circle>
-                    </BookmarkDiv>
-                    <Description>
-                      <Year>{image.year}</Year>
-                      <Dot></Dot>
-                      <Icon src="icon-nav-movies.svg" />
-                      <Kind>{image.category}</Kind>
-                      <Dot></Dot>
-                      <Age>{image.rating}</Age>
-                    </Description>
-                    <Head>{image.title}</Head>
-                  </FinalImage>
-                </ImageBox>
-              );
-            })}
-          </InnerDiv>
-        </TrandDiv>
-        <Recomended>Recommended for you</Recomended>
-        <RecomDiv>
-          {updateImages.map((image, index) => (
-            <ImageDiv key={index}>
-              <picture>
-                <source
-                  media="(min-width: 1440px)"
-                  srcSet={`http://localhost:3001/images${image.thumbnail.regular.large}`}
-                />
-                <source
-                  media="(min-width: 768px)"
-                  srcSet={`http://localhost:3001/images${image.thumbnail.regular.medium}`}
-                />
-                <GetImage
-                  src={`http://localhost:3001/images${image.thumbnail.regular.small}`}
-                  alt="Image"
-                />
-              </picture>
-              <Description>
-                <Year>{image.year}</Year>
-                <Dot></Dot>
-                <Icon src="icon-nav-movies.svg" />
-                <Kind>{image.category}</Kind>
-                <Dot></Dot>
-                <Age>{image.rating}</Age>
-              </Description>
-              <Head>{image.title}</Head>
-              <BookmarkDivTwo>
-                <Circle
-                  onClick={() => {
-                    toggleBook(image.title);
-                    console.log(image.title);
-                  }}
-                >
-                  <BookImg
-                    src={
-                      image.isBookmarked
-                        ? "icon-bookmark-full.svg"
-                        : "icon-bookmark-empty.svg"
-                    }
-                  />
-                </Circle>
-              </BookmarkDivTwo>
-            </ImageDiv>
-          ))}
-        </RecomDiv>
+        <img src="logo.svg" />
+        <LogIn>
+          <Header>Login</Header>
+          <Form>
+            <InputField
+              placeholder="Email address"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <Warn
+              style={{
+                display:
+                  warning === "Please enter email and password" &&
+                  submitClicked &&
+                  email === ""
+                    ? "block"
+                    : "none",
+              }}
+            >
+              "Please enter email address
+            </Warn>
+            <Warn
+              style={{
+                display:
+                  !emailRegex.test(email) && submitClicked && email !== ""
+                    ? "block"
+                    : "none",
+                color: "red",
+              }}
+            >
+              Incorrect email
+            </Warn>
+            <InputField
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Warn
+              style={{
+                display:
+                  warning === "Please enter email and password" &&
+                  submitClicked &&
+                  password === ""
+                    ? "block"
+                    : "none",
+              }}
+            >
+              "Please enter password"
+            </Warn>
+            <Warn
+              style={{
+                display:
+                  warning === "Incorrect password" && submitClicked
+                    ? "block"
+                    : "none",
+              }}
+            >
+              Wrong password
+            </Warn>
+            <LogDone
+              onClick={() => {
+                logg(email, password);
+              }}
+            >
+              Login to your account
+            </LogDone>
+            <SingDiv>
+              <Question>Don’t have an account?</Question>
+              <SignUp
+                onClick={() => {
+                  router.push("/singup");
+                }}
+              >
+                Sing Up
+              </SignUp>
+            </SingDiv>
+          </Form>
+        </LogIn>
       </Main>
     </>
   );
 }
 
-const common = keyframes`
-  from {
-    scale: 0.8;
-  
-  }
-  to {
-    scale: 1;
- 
- 
-  }
-`;
-
-const trend = keyframes`
-  from {
-   
-    transform: translateX(100%)
-  }
-  to {
-    
-    transform: translateX(0%);
-  }
-`;
-
 const Main = styled(Box)`
+  padding: 48px 24px 170px 24px;
   display: flex;
   flex-direction: column;
-  background: var(--dark-blue, #10141e);
-  width: 100%;
+  align-items: center;
   min-height: 100vh;
   @media (min-width: 768px) {
-    padding: 25px;
+    padding: 88px 184px 470px 184px;
   }
   @media (min-width: 1440px) {
+    padding: 80px 520px 250px 520px;
+  }
+`;
+
+const LogIn = styled(Box)`
+  border-radius: 10px;
+  background: var(--semi-dark-blue, #161d2f);
+  margin-top: 58px;
+  width: 100%;
+  padding: 24px 24px 32px 24px;
+  display: flex;
+  flex-direction: column;
+  @media (min-width: 768px) {
+    margin-top: 72px;
     padding: 32px;
+  }
+  @media (min-width: 1440x) {
+    margin-top: 83px;
   }
 `;
 
 const Header = styled(Typography)`
   color: var(--pure-white, #fff);
-  font-size: 20px;
+  font-size: 32px;
   font-family: Outfit;
-  font-style: normal;
   font-weight: 300;
-  line-height: normal;
-  letter-spacing: -0.312px;
-  padding-left: 16px;
-  @media (min-width: 1440px) {
-    padding-left: 130px;
-  }
+  letter-spacing: -0.5px;
 `;
 
-const TrandDiv = styled.div`
-  padding-left: 16px;
+const Form = styled(Box)`
+  width: 100%;
   margin-top: 16px;
-  cursor: grab;
-
-  overflow: hidden;
-  @media (min-width: 1440px) {
-    margin-left: 110px;
-  }
-`;
-const InnerDiv = styled(motion.div)<InnerDivProps>`
-  display: flex;
-`;
-
-const ImageBox = styled.div`
-  min-height: 140px;
-  min-width: 240px;
-  padding: 8px;
-
-  @media (min-width: 768px) {
-    min-width: 470px;
-    min-height: 230px;
-    flex-shrink: 0;
-  }
-`;
-
-const FinalImage = styled.div<FinalImageProps>`
-  border-radius: 8px;
-  width: 100%;
-  height: 100%;
-  background-image: url(${(props) => props.imageSrc});
-  background-size: cover;
-  background-position: center;
-  padding: 8px 8px 16px 16px;
-  animation: ${trend} 1.8s ease-out;
-  @media (min-width: 768px) {
-    background-image: url(${(props) => props.imageSrcMedium});
-    padding: 16px 24px 24px 24px;
-  }
-  @media (min-width: 1440px) {
-    background-image: url(${(props) => props.imageSrcLarge});
-  }
-`;
-
-const BookmarkDiv = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: flex-end;
-  align-items: center;
-  margin-bottom: 46px;
-  @media (min-width: 768px) {
-    margin-bottom: 106px;
-  }
-`;
-const BookmarkDivTwo = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: flex-end;
-  align-items: center;
-  right: 8px;
-  top: 8px;
-  position: absolute;
-  @media (min-width: 768px) {
-    right: 16px;
-    top: 16px;
-  }
-`;
-
-const Circle = styled.div`
-  width: 32px;
-  height: 32px;
-  flex-shrink: 0;
-  background: #10141e;
-  border-radius: 100%;
-  opacity: 0.7;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-`;
-const BookImg = styled.img`
-  cursor: pointer;
-`;
-
-const Recomended = styled(Typography)`
-  color: var(--pure-white, #fff);
-  font-size: 20px;
-  font-family: Outfit;
-  font-style: normal;
-  font-weight: 300;
-  line-height: normal;
-  letter-spacing: -0.312px;
-  padding-left: 16px;
-  margin-top: 24px;
-  @media (min-width: 1440px) {
-    padding-left: 130px;
-  }
-`;
-
-const RecomDiv = styled(Box)`
-  width: 100%;
-  padding-left: 16px;
-  padding-right: 16px;
-  margin-top: 24px;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: auto;
-  grid-gap: 15px;
-  @media (min-width: 768px) {
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 30px;
-  }
-  @media (min-width: 1440px) {
-    padding-left: 130px;
-    column-gap: 40px;
-    row-gap: 28px;
-    grid-template-columns: repeat(4, 1fr);
-  }
-`;
-
-const ImageDiv = styled(Box)`
-  border-radius: 8px;
   display: flex;
   flex-direction: column;
-  position: relative;
 `;
 
-const GetImage = styled.img`
-  max-width: 100%;
-  border-radius: 8px;
-  animation: ${common} 1s ease-out;
+const InputField = styled(Input)`
+  font-size: 15px;
+  font-family: Outfit;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+  opacity: 0.5;
+  padding: 0px 0px 18px 16px;
+  color: var(--pure-white, #fff);
+  border: none;
+  margin-top: 24px;
+  border-bottom: 1px solid #5a698f;
 `;
 
-const Description = styled(Box)`
+const LogDone = styled(Button)`
+  border-radius: 6px;
+  background: var(--red, #fc4747);
+  color: var(--pure-white, #fff);
+  text-align: center;
+  font-size: 13px;
+  font-family: Outfit;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+  padding: 14px 30px 15px 30px;
+  margin-top: 40px;
+`;
+
+const SingDiv = styled(Box)`
   width: 100%;
+
+  margin-top: 24px;
   display: flex;
   flex-direction: row;
-  margin-top: 8px;
   align-items: center;
-  margin-left: 2px;
+  justify-content: center;
 `;
 
-const Year = styled(Typography)`
+const Question = styled(Typography)`
   color: var(--pure-white, #fff);
-  font-size: 14px;
+  font-size: 15px;
   font-family: Outfit;
   font-style: normal;
   font-weight: 300;
   line-height: normal;
-  opacity: 0.75;
-  @media (min-width: 768px) {
-    font-size: 18px;
-  }
 `;
 
-const Dot = styled(Box)`
-  width: 2px;
-  height: 2px;
-  border-radius: 2px;
-  opacity: 0.5;
-  background: var(--pure-white, #fff);
-  margin-left: 6px;
-  opacity: 0.75;
-  @media (min-width: 768px) {
-    width: 3px;
-    height: 3px;
-  }
-`;
-const Icon = styled.img`
-  width: 10px;
-  height: 10px;
-  margin-left: 5px;
-  opacity: 0.75;
-
-  @media (min-width: 768px) {
-    width: 12px;
-    height: 12px;
-    margin-left: 7px;
-  }
-`;
-
-const Kind = styled(Typography)`
-  color: var(--pure-white, #fff);
-  font-size: 14px;
+const SignUp = styled(Button)`
+  color: var(--red, #fc4747);
+  font-size: 12px;
   font-family: Outfit;
   font-style: normal;
   font-weight: 300;
   line-height: normal;
-  opacity: 0.75;
-  margin-left: 6px;
-  @media (min-width: 768px) {
-    font-size: 18px;
-  }
 `;
 
-const Age = styled(Typography)`
-  color: var(--pure-white, #fff);
-  font-size: 14px;
+const Warn = styled(Typography)`
+  font-size: 12px;
   font-family: Outfit;
   font-style: normal;
   font-weight: 300;
   line-height: normal;
-  margin-left: 6px;
-  opacity: 0.75;
-  @media (min-width: 768px) {
-    font-size: 18px;
-  }
-`;
-
-const Head = styled.span`
-  color: var(--pure-white, #fff);
-  font-size: 14px;
-  font-family: Outfit;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  margin-top: 2px;
-  margin-left: 2px;
-  @media (min-width: 768px) {
-    font-size: 18px;
-  }
+  color: red;
+  margin-top: 5px;
+  margin-left: 3px;
 `;

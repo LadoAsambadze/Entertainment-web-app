@@ -40,7 +40,7 @@ export default function Singup() {
             password: password,
           });
 
-          router.push("/login");
+          router.push("/");
         } catch (error) {
           setWarning((error as AxiosError).response.data.message);
         }
@@ -142,7 +142,7 @@ export default function Singup() {
               <Question>Alread have an account?</Question>
               <SignUp
                 onClick={() => {
-                  router.push("/login");
+                  router.push("/");
                 }}
               >
                 Login
