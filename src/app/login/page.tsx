@@ -5,10 +5,40 @@ import { styled } from "@mui/material/styles";
 import { Typography } from "@mui/material";
 import { Input } from "@mui/material";
 import { Button } from "@mui/material";
+import axios from "axios";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+interface TypeErrors {
+  response: {
+    data: {
+      message: string;
+    };
+  };
+}
 
 export default function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [warning, setWarning] = useState("");
+  const [submitClicked, setSubmitClicked] = useState(false);
+  const emailRegex =
+    /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z]{2,})$/;
 
-  
+  const router = useRouter();
+  const logg = async (email: any, password: any) => {
+    setSubmitClicked(true);
+    try {
+      const response = await axios.post("http://localhost:3001/login", {
+        email: email,
+        password: password,
+      });
+      setWarning(response.data.message);
+      router.push("/");
+    } catch (error) {
+      setWarning((error as TypeErrors).response.data.message);
+    }
+  };
+  console.log(warning);
   return (
     <>
       <Main>
@@ -16,12 +46,78 @@ export default function Login() {
         <LogIn>
           <Header>Login</Header>
           <Form>
-            <InputField placeholder="Email address" type="email" />
-            <InputField placeholder="Password" type="text" />
-            <LogDone>Login to your account</LogDone>
+            <InputField
+              placeholder="Email address"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <Warn
+              style={{
+                display:
+                  warning === "Please enter email and password" &&
+                  submitClicked &&
+                  email === ""
+                    ? "block"
+                    : "none",
+              }}
+            >
+              Email required
+            </Warn>
+            <Warn
+              style={{
+                display:
+                  !emailRegex.test(email) && submitClicked && email !== ""
+                    ? "block"
+                    : "none",
+                color: "red",
+              }}
+            >
+              Incorrect email
+            </Warn>
+            <InputField
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Warn
+              style={{
+                display:
+                  warning === "Please enter email and password" &&
+                  submitClicked &&
+                  password === ""
+                    ? "block"
+                    : "none",
+              }}
+            >
+              Password required
+            </Warn>
+            <Warn
+              style={{
+                display:
+                  warning === "Incorrect password" && submitClicked
+                    ? "block"
+                    : "none",
+              }}
+            >
+              Incorrect password
+            </Warn>
+            <LogDone
+              onClick={() => {
+                logg(email, password);
+              }}
+            >
+              Login to your account
+            </LogDone>
             <SingDiv>
               <Question>Don’t have an account?</Question>
-              <SignUp>Sing Up</SignUp>
+              <SignUp
+                onClick={() => {
+                  router.push("/singup");
+                }}
+              >
+                Sing Up
+              </SignUp>
             </SingDiv>
           </Form>
         </LogIn>
@@ -130,4 +226,15 @@ const SignUp = styled(Button)`
   font-style: normal;
   font-weight: 300;
   line-height: normal;
+`;
+
+const Warn = styled(Typography)`
+  font-size: 12px;
+  font-family: Outfit;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+  color: red;
+  margin-top: 5px;
+  margin-left: 3px;
 `;
