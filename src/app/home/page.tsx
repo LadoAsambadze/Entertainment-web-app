@@ -93,15 +93,24 @@ export default function Home() {
     setExtra(!extra);
   };
 
-  const router = useRouter();
-  const token = getCookie("token");
-  useEffect(() => {
-    if (token) {
-      //use is logged
-    } else {
-      router.push("/");
-    }
-  }, []);
+
+  // const router = useRouter();
+  // const cookieToken = getCookie("token");
+
+
+  // useEffect(() => {
+
+  //   if (cookieToken && cookieToken === token) {
+  //     //use is logged
+  //   } else {
+  //     router.push("/");
+  //   }
+  // }, []);
+
+
+
+
+
   return (
     <>
       <Main>
@@ -128,7 +137,6 @@ export default function Home() {
                       <Circle
                         onClick={() => {
                           toggleBook(image.title);
-                          
                         }}
                       >
                         <BookImg
@@ -186,7 +194,6 @@ export default function Home() {
                 <Circle
                   onClick={() => {
                     toggleBook(image.title);
-            
                   }}
                 >
                   <BookImg

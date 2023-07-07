@@ -6,6 +6,7 @@ import { useState } from "react";
 
 export default function Desktopmenu({ theme, setTheme, setBook }: any) {
   const [clicked, setClicked] = useState(false);
+  const [cook, setCook] = useState(false);
   return (
     <>
       <Main>

@@ -27,7 +27,6 @@ export default function Login() {
     /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z]{2,})$/;
 
   const router = useRouter();
-
   const logg = async (email: any, password: any) => {
     setSubmitClicked(true);
     try {
@@ -37,6 +36,7 @@ export default function Login() {
       });
       setWarning(response.data.message);
       setCookie("token", response.data.token);
+
       router.push("/home");
     } catch (error) {
       setWarning((error as TypeErrors).response.data.message);
