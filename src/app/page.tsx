@@ -8,6 +8,8 @@ import { Button } from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { setCookie } from "cookies-next";
+
 interface TypeErrors {
   response: {
     data: {
@@ -25,6 +27,7 @@ export default function Login() {
     /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z]{2,})$/;
 
   const router = useRouter();
+
   const logg = async (email: any, password: any) => {
     setSubmitClicked(true);
     try {
@@ -33,12 +36,13 @@ export default function Login() {
         password: password,
       });
       setWarning(response.data.message);
+      setCookie("token", response.data.token);
       router.push("/home");
     } catch (error) {
       setWarning((error as TypeErrors).response.data.message);
     }
   };
-  console.log(warning);
+
   return (
     <>
       <Main>

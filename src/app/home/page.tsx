@@ -9,6 +9,10 @@ import axios from "axios";
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { keyframes } from "@emotion/react";
+
+import { getCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
+
 interface Image {
   thumbnail: {
     regular: {
@@ -51,6 +55,7 @@ export default function Home() {
   const [animate, setAnimate] = useState(true);
   const [extra, setExtra] = useState(false);
   const carousel = useRef<HTMLDivElement | null>(null);
+
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
   };
@@ -87,8 +92,16 @@ export default function Home() {
     await axios.put(`http://localhost:3001/bookmark/${title}`);
     setExtra(!extra);
   };
-  console.log(images);
 
+  const router = useRouter();
+  const token = getCookie("token");
+  useEffect(() => {
+    if (token) {
+      //use is logged
+    } else {
+      router.push("/");
+    }
+  }, []);
   return (
     <>
       <Main>
@@ -115,7 +128,7 @@ export default function Home() {
                       <Circle
                         onClick={() => {
                           toggleBook(image.title);
-                          console.log(image.title);
+                          
                         }}
                       >
                         <BookImg
@@ -173,7 +186,7 @@ export default function Home() {
                 <Circle
                   onClick={() => {
                     toggleBook(image.title);
-                    console.log(image.title);
+            
                   }}
                 >
                   <BookImg
