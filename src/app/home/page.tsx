@@ -125,7 +125,7 @@ export default function Home() {
             {updateTrending.map((image, index) => {
               return (
                 <ImageBox as={motion.div} key={index}>
-                  <FinalImage
+                  <FinalImage  
                     imageSrc={`http://localhost:3001/images${image.thumbnail.regular.small}`}
                     imageSrcMedium={`http://localhost:3001/images${image.thumbnail.regular.medium}`}
                     imageSrcLarge={`http://localhost:3001/images${image.thumbnail.regular.large}`}

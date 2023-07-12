@@ -27,12 +27,18 @@ export default function Singup() {
   const emailRegex =
     /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z]{2,})$/;
 
-  const register = async (email: any, password: any, avatar: any) => {
+  const register = async (
+    email: string,
+    password: string,
+    avatar: File | undefined
+  ) => {
     setSubmitClicked(true);
     const formData = new FormData();
     formData.append("email", email);
     formData.append("password", password);
-    formData.append("avatar", avatar);
+    if (avatar) {
+      formData.append("avatar", avatar);
+    }
 
     if (
       email !== "" &&
@@ -68,7 +74,7 @@ export default function Singup() {
   return (
     <>
       <Main>
-        <img src="logo.svg" />
+        <img alt="icon" src="logo.svg" />
         <LogIn>
           <Header>Sing Up</Header>
           <Form>

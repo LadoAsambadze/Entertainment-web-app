@@ -40,9 +40,11 @@ export default function Menu({ theme, setTheme, setBook }: any) {
             setClicked(false);
           }}
           src="logo.svg"
+          alt="icon"
         />
         <IconBox>
           <Image
+           alt="icon"
             src="icon-nav-home.svg"
             onClick={() => {
               setTheme("");
@@ -57,6 +59,7 @@ export default function Menu({ theme, setTheme, setBook }: any) {
             }}
           />
           <Image
+           alt="icon"
             src="icon-category-movie.svg"
             onClick={() => {
               setTheme("Movie");
@@ -71,6 +74,7 @@ export default function Menu({ theme, setTheme, setBook }: any) {
             }}
           />
           <Image
+           alt="icon"
             src="icon-category-tv.svg"
             onClick={() => {
               setTheme("TV Series");
@@ -85,6 +89,7 @@ export default function Menu({ theme, setTheme, setBook }: any) {
             }}
           />
           <Image
+           alt="icon"
             src="icon-bookmark-full.svg"
             onClick={() => {
               setBook(true);
@@ -94,6 +99,7 @@ export default function Menu({ theme, setTheme, setBook }: any) {
           />
         </IconBox>
         <Avatar
+         alt="avatar"
           style={{ display: out ? "none" : "block" }}
           onClick={() => setOut(true)}
           src={`http://localhost:3001${info?.avatar}`}

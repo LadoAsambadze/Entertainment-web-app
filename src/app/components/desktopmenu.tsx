@@ -45,6 +45,7 @@ export default function Desktopmenu({ theme, setTheme, setBook }: any) {
         <IconBox>
           <Image
             src="icon-nav-home.svg"
+            alt="icon"
             onClick={() => {
               setTheme("");
               setBook(false);
@@ -58,6 +59,7 @@ export default function Desktopmenu({ theme, setTheme, setBook }: any) {
             }}
           />
           <Image
+            alt="icon"
             src="icon-category-movie.svg"
             onClick={() => {
               setTheme("Movie");
@@ -72,6 +74,7 @@ export default function Desktopmenu({ theme, setTheme, setBook }: any) {
             }}
           />
           <Image
+            alt="icon"
             src="icon-category-tv.svg"
             onClick={() => {
               setTheme("TV Series");
@@ -87,6 +90,7 @@ export default function Desktopmenu({ theme, setTheme, setBook }: any) {
           />
 
           <Image
+            alt="icon"
             src="icon-bookmark-full.svg"
             onClick={() => {
               setBook(true);
@@ -96,7 +100,7 @@ export default function Desktopmenu({ theme, setTheme, setBook }: any) {
           />
         </IconBox>
 
-        <Avatar src={`http://localhost:3001${info?.avatar}`} />
+        <Avatar alt="avatar" src={`http://localhost:3001${info?.avatar}`} />
         <LogOut
           onClick={() => {
             deleteCookie("token");
@@ -156,17 +160,6 @@ const Avatar = styled.img`
   cursor: pointer;
   border-radius: 10px;
 `;
-
-// const User = styled(Typography)`
-//   color: black;
-//   font-size: 12px;
-//   padding: 3px;
-//   background: #71d064;
-//   border-radius: 5px;
-//   margin-bottom: 10px;
-//   z-index: 100;
-//   width: 200px;
-// `;
 
 const LogOut = styled.button`
   background: #d17272;
