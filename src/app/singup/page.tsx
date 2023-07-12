@@ -23,9 +23,10 @@ export default function Singup() {
   const [repeat, setRepeat] = useState("");
   const [warning, setWarning] = useState("");
   const [submitClicked, setSubmitClicked] = useState(false);
-  const [avatar, setAvatar] = useState<String>("");
+  const [avatar, setAvatar] = useState<File | undefined>();
   const emailRegex =
     /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z]{2,})$/;
+
   const register = async (email: any, password: any, avatar: any) => {
     setSubmitClicked(true);
     const formData = new FormData();
@@ -45,6 +46,7 @@ export default function Singup() {
             "http://localhost:3001/singup",
             formData
           );
+          console.log(formData);
 
           router.push("/");
         } catch (error) {
@@ -58,14 +60,8 @@ export default function Singup() {
   const router = useRouter();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        if (event.target && typeof event.target.result === "string") {
-          setAvatar(event.target.result);
-        }
-      };
-      reader.readAsDataURL(e.target.files[0]);
+    if (e.target.files) {
+      setAvatar(e.target.files[0]);
     }
   };
 

@@ -3,18 +3,44 @@ import React from "react";
 import { Box } from "@mui/material";
 import styled from "@emotion/styled";
 import { useState } from "react";
-
-export default function Menu({ theme, setTheme,  setBook }: any) {
+import axios from "axios";
+import { useEffect } from "react";
+import { deleteCookie, getCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
+interface avt {
+  avatar: string;
+}
+export default function Menu({ theme, setTheme, setBook }: any) {
   const [clicked, setClicked] = useState(false);
+  const [info, setInfo] = useState<avt>();
+  const [out, setOut] = useState(false);
+  const router = useRouter();
+  const funct = async () => {
+    const cookieToken = getCookie("token");
+    if (cookieToken) {
+      const response = await axios.get("http://localhost:3001/profile", {
+        headers: {
+          authorization: `Bearer ${cookieToken}`,
+        },
+      });
+      setInfo(response.data);
+    }
+  };
+  useEffect(() => {
+    funct();
+  }, []);
 
   return (
     <>
       <Main>
-        <Logo  onClick={() => {
-              setTheme("");
-              setBook(false);
-              setClicked(false);
-            }} src="logo.svg" />
+        <Logo
+          onClick={() => {
+            setTheme("");
+            setBook(false);
+            setClicked(false);
+          }}
+          src="logo.svg"
+        />
         <IconBox>
           <Image
             src="icon-nav-home.svg"
@@ -39,7 +65,9 @@ export default function Menu({ theme, setTheme,  setBook }: any) {
             }}
             style={{
               filter:
-                theme === "Movie" && !clicked ? " brightness(100%)" : " brightness(50%)",
+                theme === "Movie" && !clicked
+                  ? " brightness(100%)"
+                  : " brightness(50%)",
             }}
           />
           <Image
@@ -65,7 +93,20 @@ export default function Menu({ theme, setTheme,  setBook }: any) {
             style={{ filter: clicked ? "brightness(100%)" : "brightness(50%)" }}
           />
         </IconBox>
-        <Avatar src="image-avatar.png" />
+        <Avatar
+          style={{ display: out ? "none" : "block" }}
+          onClick={() => setOut(true)}
+          src={`http://localhost:3001${info?.avatar}`}
+        />
+        <LogOut
+          onClick={() => {
+            router.push("/");
+            deleteCookie("token");
+          }}
+          style={{ display: out ? "block" : "none" }}
+        >
+          Log Out
+        </LogOut>
       </Main>
     </>
   );
@@ -117,7 +158,21 @@ const IconBox = styled(Box)`
 `;
 
 const Avatar = styled.img`
-  height: 24px;
-  width: 24px;
+  height: 32px;
+  width: 40px;
   cursor: pointer;
+  border-radius: 8px;
+`;
+
+const LogOut = styled.button`
+  background: #e87979;
+  color: white;
+  padding: 4px;
+
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 8px;
+  padding-left: 18px;
+  padding-right: 18px;
 `;

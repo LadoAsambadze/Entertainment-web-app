@@ -3,17 +3,18 @@
 import styled from "@emotion/styled";
 import { Box, Typography } from "@mui/material";
 import axios from "axios";
-
 import { useEffect, useState } from "react";
 import { getCookie } from "cookies-next";
 import { deleteCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
+interface avt {
+  avatar: string;
+}
 
 export default function Desktopmenu({ theme, setTheme, setBook }: any) {
   const [clicked, setClicked] = useState(false);
-  const [info, setInfo] = useState();
+  const [info, setInfo] = useState<avt>();
   const router = useRouter();
-
   const funct = async () => {
     const cookieToken = getCookie("token");
     if (cookieToken) {
@@ -25,7 +26,6 @@ export default function Desktopmenu({ theme, setTheme, setBook }: any) {
       setInfo(response.data);
     }
   };
-
   useEffect(() => {
     funct();
   }, []);
@@ -96,10 +96,7 @@ export default function Desktopmenu({ theme, setTheme, setBook }: any) {
           />
         </IconBox>
 
-        <Avatar
-          src={`http://localhost:3001/avatar/${info?.avatar}`}
-          onClick={() => {}}
-        />
+        <Avatar src={`http://localhost:3001${info?.avatar}`} />
         <LogOut
           onClick={() => {
             deleteCookie("token");
@@ -154,9 +151,10 @@ const Image = styled.img`
 `;
 
 const Avatar = styled.img`
-  height: 60px;
-  width: 60px;
+  height: 80px;
+  width: 80px;
   cursor: pointer;
+  border-radius: 10px;
 `;
 
 // const User = styled(Typography)`
