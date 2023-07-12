@@ -33,10 +33,13 @@ export default function Login() {
   const logg = async (email: any, password: any) => {
     setSubmitClicked(true);
     try {
-      const response = await axios.post("http://localhost:3001/login", {
-        email: email,
-        password: password,
-      });
+      const response = await axios.post(
+        "https://entertainment-app-back-production.up.railway.app/login",
+        {
+          email: email,
+          password: password,
+        }
+      );
       setWarning(response.data.message);
       setCookie("token", response.data.token);
       setToken(response.data.user);

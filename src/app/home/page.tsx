@@ -72,7 +72,9 @@ export default function Home() {
   const updateTrending = images.filter((image) => image.isTrending === true);
 
   const test = async () => {
-    const response = await axios.get("http://localhost:3001/home");
+    const response = await axios.get(
+      "https://entertainment-app-back-production.up.railway.app/home"
+    );
     const res = response.data.getItems;
 
     setImages(res);
@@ -91,7 +93,9 @@ export default function Home() {
   }, [images]);
 
   const toggleBook = async (title: string) => {
-    await axios.put(`http://localhost:3001/bookmark/${title}`);
+    await axios.put(
+      `https://entertainment-app-back-production.up.railway.app/bookmark/${title}`
+    );
     setExtra(!extra);
   };
 
@@ -125,9 +129,9 @@ export default function Home() {
               return (
                 <ImageBox as={motion.div} key={index}>
                   <FinalImage
-                    imageSrc={`http://localhost:3001/images${image.thumbnail.regular.small}`}
-                    imageSrcMedium={`http://localhost:3001/images${image.thumbnail.regular.medium}`}
-                    imageSrcLarge={`http://localhost:3001/images${image.thumbnail.regular.large}`}
+                    imageSrc={`https://entertainment-app-back-production.up.railway.app/images${image.thumbnail.regular.small}`}
+                    imageSrcMedium={`https://entertainment-app-back-production.up.railway.app/images${image.thumbnail.regular.medium}`}
+                    imageSrcLarge={`https://entertainment-app-back-production.up.railway.app/images${image.thumbnail.regular.large}`}
                   >
                     <BookmarkDiv>
                       <Circle
@@ -166,14 +170,14 @@ export default function Home() {
               <picture>
                 <source
                   media="(min-width: 1440px)"
-                  srcSet={`http://localhost:3001/images${image.thumbnail.regular.large}`}
+                  srcSet={`https://entertainment-app-back-production.up.railway.app/images${image.thumbnail.regular.large}`}
                 />
                 <source
                   media="(min-width: 768px)"
-                  srcSet={`http://localhost:3001/images${image.thumbnail.regular.medium}`}
+                  srcSet={`https://entertainment-app-back-production.up.railway.app/images${image.thumbnail.regular.medium}`}
                 />
                 <GetImage
-                  src={`http://localhost:3001/images${image.thumbnail.regular.small}`}
+                  src={`https://entertainment-app-back-production.up.railway.app/images${image.thumbnail.regular.small}`}
                   alt="Image"
                 />
               </picture>

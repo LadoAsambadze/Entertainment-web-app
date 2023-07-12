@@ -18,7 +18,7 @@ export default function Menu({ theme, setTheme, setBook }: any) {
   const funct = async () => {
     const cookieToken = getCookie("token");
     if (cookieToken) {
-      const response = await axios.get("http://localhost:3001/profile", {
+      const response = await axios.get("https://entertainment-app-back-production.up.railway.app/profile", {
         headers: {
           authorization: `Bearer ${cookieToken}`,
         },

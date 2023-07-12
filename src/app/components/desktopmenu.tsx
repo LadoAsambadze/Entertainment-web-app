@@ -18,11 +18,14 @@ export default function Desktopmenu({ theme, setTheme, setBook }: any) {
   const funct = async () => {
     const cookieToken = getCookie("token");
     if (cookieToken) {
-      const response = await axios.get("http://localhost:3001/profile", {
-        headers: {
-          authorization: `Bearer ${cookieToken}`,
-        },
-      });
+      const response = await axios.get(
+        "https://entertainment-app-back-production.up.railway.app/profile",
+        {
+          headers: {
+            authorization: `Bearer ${cookieToken}`,
+          },
+        }
+      );
       setInfo(response.data);
     }
   };

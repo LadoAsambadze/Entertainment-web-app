@@ -50,7 +50,7 @@ export default function Singup() {
       if (repeat === password) {
         try {
           const response = await axios.post(
-            "http://localhost:3001/singup",
+            "https://entertainment-app-back-production.up.railway.app//singup",
             formData
           );
           console.log(formData);
