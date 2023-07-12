@@ -70,7 +70,7 @@ export default function Login() {
                     : "none",
               }}
             >
-              "Please enter email address
+              Please enter email address
             </Warn>
             <Warn
               style={{
@@ -98,7 +98,7 @@ export default function Login() {
                     : "none",
               }}
             >
-              "Please enter password"
+              Please enter password
             </Warn>
             <Warn
               style={{

@@ -148,7 +148,7 @@ export default function Singup() {
                 color: "red",
               }}
             >
-              Passwords don't match
+              Passwords don t match
             </Warn>
 
             <input
