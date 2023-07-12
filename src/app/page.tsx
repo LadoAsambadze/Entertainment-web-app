@@ -10,6 +10,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { setCookie } from "cookies-next";
 import useStore from "./store";
+import Image from "next/image";
 
 interface TypeErrors {
   response: {
@@ -49,7 +50,7 @@ export default function Login() {
   return (
     <>
       <Main>
-        <img src="logo.svg" alt="icon" />
+        <Image src="logo.svg" alt="icon" />
         <LogIn>
           <Header>Login</Header>
           <Form>

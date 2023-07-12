@@ -8,6 +8,7 @@ import { Button } from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 interface AxiosError extends Error {
   response: {
@@ -74,7 +75,7 @@ export default function Singup() {
   return (
     <>
       <Main>
-        <img alt="icon" src="logo.svg" />
+        <Image alt="icon" src="logo.svg" />
         <LogIn>
           <Header>Sing Up</Header>
           <Form>
