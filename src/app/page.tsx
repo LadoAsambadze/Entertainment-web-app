@@ -9,6 +9,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { setCookie } from "cookies-next";
+import useStore from "./store";
 
 interface TypeErrors {
   response: {
@@ -23,6 +24,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [warning, setWarning] = useState("");
   const [submitClicked, setSubmitClicked] = useState(false);
+  const { token, setToken } = useStore();
   const emailRegex =
     /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z]{2,})$/;
 
@@ -36,6 +38,7 @@ export default function Login() {
       });
       setWarning(response.data.message);
       setCookie("token", response.data.token);
+      setToken(response.data.user);
 
       router.push("/home");
     } catch (error) {

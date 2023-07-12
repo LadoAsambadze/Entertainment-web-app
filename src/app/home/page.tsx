@@ -9,9 +9,11 @@ import axios from "axios";
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { keyframes } from "@emotion/react";
-
-import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
+import { getCookie } from "cookies-next";
+
+
+import useStore from "../store";
 
 interface Image {
   thumbnail: {
@@ -55,7 +57,8 @@ export default function Home() {
   const [animate, setAnimate] = useState(true);
   const [extra, setExtra] = useState(false);
   const carousel = useRef<HTMLDivElement | null>(null);
-
+  const { token } = useStore();
+  const [testi, setTest] = useState("1");
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
   };
@@ -93,23 +96,16 @@ export default function Home() {
     setExtra(!extra);
   };
 
+  const router = useRouter();
+  const cookieToken = getCookie("token");
 
-  // const router = useRouter();
-  // const cookieToken = getCookie("token");
-
-
-  // useEffect(() => {
-
-  //   if (cookieToken && cookieToken === token) {
-  //     //use is logged
-  //   } else {
-  //     router.push("/");
-  //   }
-  // }, []);
-
-
-
-
+  useEffect(() => {
+    if (cookieToken) {
+      console.log("logged");
+    } else {
+      router.push("/");
+    }
+  }, [token, cookieToken]);
 
   return (
     <>
@@ -120,6 +116,7 @@ export default function Home() {
           setTheme={setTheme}
           book={book}
           setBook={setBook}
+          token={token}
         />
         <Searchbar onChange={handleSearch} />
         <Header>Tranding</Header>

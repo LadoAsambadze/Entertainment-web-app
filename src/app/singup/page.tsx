@@ -23,10 +23,16 @@ export default function Singup() {
   const [repeat, setRepeat] = useState("");
   const [warning, setWarning] = useState("");
   const [submitClicked, setSubmitClicked] = useState(false);
+  const [avatar, setAvatar] = useState<String>("");
   const emailRegex =
     /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z]{2,})$/;
-  const register = async (email: any, password: any) => {
+  const register = async (email: any, password: any, avatar: any) => {
     setSubmitClicked(true);
+    const formData = new FormData();
+    formData.append("email", email);
+    formData.append("password", password);
+    formData.append("avatar", avatar);
+
     if (
       email !== "" &&
       password !== "" &&
@@ -35,10 +41,10 @@ export default function Singup() {
     ) {
       if (repeat === password) {
         try {
-          const response = await axios.post("http://localhost:3001/singup", {
-            email: email,
-            password: password,
-          });
+          const response = await axios.post(
+            "http://localhost:3001/singup",
+            formData
+          );
 
           router.push("/");
         } catch (error) {
@@ -50,6 +56,18 @@ export default function Singup() {
     }
   };
   const router = useRouter();
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (event.target && typeof event.target.result === "string") {
+          setAvatar(event.target.result);
+        }
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    }
+  };
 
   return (
     <>
@@ -130,10 +148,22 @@ export default function Singup() {
               Passwords don't match
             </Warn>
 
+            <input
+              style={{
+                marginTop: "20px",
+                background: "#898e9d",
+                padding: "10px",
+                borderRadius: "5px",
+              }}
+              type="file"
+              name="file"
+              onChange={handleFileChange}
+            />
+
             <LogDone
               type="submit"
               onClick={() => {
-                register(email, password);
+                register(email, password, avatar);
               }}
             >
               Create an account

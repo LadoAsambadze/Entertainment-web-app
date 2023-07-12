@@ -1,12 +1,35 @@
 "use client";
 
 import styled from "@emotion/styled";
-import { Box } from "@mui/material";
-import { useState } from "react";
+import { Box, Typography } from "@mui/material";
+import axios from "axios";
+
+import { useEffect, useState } from "react";
+import { getCookie } from "cookies-next";
+import { deleteCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
 
 export default function Desktopmenu({ theme, setTheme, setBook }: any) {
   const [clicked, setClicked] = useState(false);
-  const [cook, setCook] = useState(false);
+  const [info, setInfo] = useState();
+  const router = useRouter();
+
+  const funct = async () => {
+    const cookieToken = getCookie("token");
+    if (cookieToken) {
+      const response = await axios.get("http://localhost:3001/profile", {
+        headers: {
+          authorization: `Bearer ${cookieToken}`,
+        },
+      });
+      setInfo(response.data);
+    }
+  };
+
+  useEffect(() => {
+    funct();
+  }, []);
+
   return (
     <>
       <Main>
@@ -72,7 +95,19 @@ export default function Desktopmenu({ theme, setTheme, setBook }: any) {
             style={{ filter: clicked ? "brightness(100%)" : "brightness(50%)" }}
           />
         </IconBox>
-        <Avatar src="image-avatar.png" />
+
+        <Avatar
+          src={`http://localhost:3001/avatar/${info?.avatar}`}
+          onClick={() => {}}
+        />
+        <LogOut
+          onClick={() => {
+            deleteCookie("token");
+            router.push("/");
+          }}
+        >
+          Log Out
+        </LogOut>
       </Main>
     </>
   );
@@ -119,7 +154,28 @@ const Image = styled.img`
 `;
 
 const Avatar = styled.img`
-  height: 40px;
-  width: 40px;
+  height: 60px;
+  width: 60px;
+  cursor: pointer;
+`;
+
+// const User = styled(Typography)`
+//   color: black;
+//   font-size: 12px;
+//   padding: 3px;
+//   background: #71d064;
+//   border-radius: 5px;
+//   margin-bottom: 10px;
+//   z-index: 100;
+//   width: 200px;
+// `;
+
+const LogOut = styled.button`
+  background: #d17272;
+  color: black;
+  padding: 4px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
 `;
