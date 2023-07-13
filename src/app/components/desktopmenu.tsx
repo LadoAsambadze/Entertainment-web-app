@@ -46,7 +46,7 @@ export default function Desktopmenu({ theme, setTheme, setBook }: any) {
           alt="logo"
         />
         <IconBox>
-          <Image
+          <img
             src="icon-nav-home.svg"
             alt="icon"
             onClick={() => {
@@ -103,8 +103,11 @@ export default function Desktopmenu({ theme, setTheme, setBook }: any) {
           />
         </IconBox>
 
-        <Avatar alt="avatar" src={`https://entertainment-app-back-production.up.railway.app${info?.avatar}`} />
-        
+        <Avatar
+          alt="avatar"
+          src={`https://entertainment-app-back-production.up.railway.app${info?.avatar}`}
+        />
+
         <LogOut
           onClick={() => {
             deleteCookie("token");

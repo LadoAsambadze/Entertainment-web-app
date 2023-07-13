@@ -9,7 +9,6 @@ import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-
 interface AxiosError extends Error {
   response: {
     data: {
@@ -162,6 +161,14 @@ export default function Singup() {
               name="file"
               onChange={handleFileChange}
             />
+            <Warn
+              style={{
+                display: !avatar && submitClicked ? "block" : "none",
+                color: "red",
+              }}
+            >
+              No File Choosen
+            </Warn>
 
             <LogDone
               type="submit"

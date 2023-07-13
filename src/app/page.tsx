@@ -53,7 +53,7 @@ export default function Login() {
   return (
     <>
       <Main>
-        <Image src="logo.svg" alt="icon" />
+        <img src="logo.svg" alt="icon" />
         <LogIn>
           <Header>Login</Header>
           <Form>
