@@ -18,11 +18,14 @@ export default function Menu({ theme, setTheme, setBook }: any) {
   const funct = async () => {
     const cookieToken = getCookie("token");
     if (cookieToken) {
-      const response = await axios.get("https://entertainment-app-back-production.up.railway.app/profile", {
-        headers: {
-          authorization: `Bearer ${cookieToken}`,
-        },
-      });
+      const response = await axios.get(
+        "https://entertainment-app-back-production.up.railway.app/profile",
+        {
+          headers: {
+            authorization: `Bearer ${cookieToken}`,
+          },
+        }
+      );
       setInfo(response.data);
     }
   };
@@ -44,7 +47,7 @@ export default function Menu({ theme, setTheme, setBook }: any) {
         />
         <IconBox>
           <Image
-           alt="icon"
+            alt="icon"
             src="icon-nav-home.svg"
             onClick={() => {
               setTheme("");
@@ -59,7 +62,7 @@ export default function Menu({ theme, setTheme, setBook }: any) {
             }}
           />
           <Image
-           alt="icon"
+            alt="icon"
             src="icon-category-movie.svg"
             onClick={() => {
               setTheme("Movie");
@@ -74,7 +77,7 @@ export default function Menu({ theme, setTheme, setBook }: any) {
             }}
           />
           <Image
-           alt="icon"
+            alt="icon"
             src="icon-category-tv.svg"
             onClick={() => {
               setTheme("TV Series");
@@ -89,7 +92,7 @@ export default function Menu({ theme, setTheme, setBook }: any) {
             }}
           />
           <Image
-           alt="icon"
+            alt="icon"
             src="icon-bookmark-full.svg"
             onClick={() => {
               setBook(true);
@@ -99,10 +102,10 @@ export default function Menu({ theme, setTheme, setBook }: any) {
           />
         </IconBox>
         <Avatar
-         alt="avatar"
+          alt="avatar"
           style={{ display: out ? "none" : "block" }}
           onClick={() => setOut(true)}
-          src={`https://entertainment-web-5rrfft7kx-ladoasambadze.vercel.app${info?.avatar}`}
+          src={`https://entertainment-app-back-production.up.railway.app${info?.avatar}`}
         />
         <LogOut
           onClick={() => {
