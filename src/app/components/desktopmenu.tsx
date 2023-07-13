@@ -103,7 +103,7 @@ export default function Desktopmenu({ theme, setTheme, setBook }: any) {
           />
         </IconBox>
 
-        <Avatar alt="avatar" src={`https://entertainment-web-5rrfft7kx-ladoasambadze.vercel.app/${info?.avatar}`} />
+        <Avatar alt="avatar" src={`https://entertainment-web-5rrfft7kx-ladoasambadze.vercel.app${info?.avatar}`} />
         <LogOut
           onClick={() => {
             deleteCookie("token");

@@ -102,7 +102,7 @@ export default function Menu({ theme, setTheme, setBook }: any) {
          alt="avatar"
           style={{ display: out ? "none" : "block" }}
           onClick={() => setOut(true)}
-          src={`https://entertainment-web-5rrfft7kx-ladoasambadze.vercel.app/${info?.avatar}`}
+          src={`https://entertainment-web-5rrfft7kx-ladoasambadze.vercel.app${info?.avatar}`}
         />
         <LogOut
           onClick={() => {
